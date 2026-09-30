@@ -1,0 +1,37 @@
+{
+  "current_discordant": 95,
+  "current_labelled": 1000,
+  "discordance_rate_pct": 9.5,
+  "records": [
+    {
+      "discordant_pairs_needed": 783,
+      "improving_share_of_flips": 0.55,
+      "labelled_items_needed": 8242,
+      "multiple_of_current": 8.2
+    },
+    {
+      "discordant_pairs_needed": 194,
+      "improving_share_of_flips": 0.6,
+      "labelled_items_needed": 2042,
+      "multiple_of_current": 2.0
+    },
+    {
+      "discordant_pairs_needed": 85,
+      "improving_share_of_flips": 0.65,
+      "labelled_items_needed": 895,
+      "multiple_of_current": 0.9
+    },
+    {
+      "discordant_pairs_needed": 47,
+      "improving_share_of_flips": 0.7,
+      "labelled_items_needed": 495,
+      "multiple_of_current": 0.5
+    },
+    {
+      "discordant_pairs_needed": 20,
+      "improving_share_of_flips": 0.8,
+      "labelled_items_needed": 211,
+      "multiple_of_current": 0.2
+    }
+  ]
+}

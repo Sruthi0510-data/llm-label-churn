@@ -1,0 +1,41 @@
+{
+  "summary": {
+    "accuracy_after": 0.819,
+    "accuracy_after_interval": [
+      0.7939,
+      0.8416
+    ],
+    "accuracy_before": 0.806,
+    "accuracy_before_interval": [
+      0.7803,
+      0.8293
+    ],
+    "accuracy_delta_points": 1.3,
+    "after": "prompt-v2",
+    "alpha": 0.05,
+    "before": "prompt-v1",
+    "changed": 2248,
+    "churn_per_net_gain": 172.9,
+    "churn_rate_pct": 8.99,
+    "coverage": 0.04,
+    "decision_would_differ": true,
+    "discordant": 95,
+    "discordant_pairs_needed": 85,
+    "evaluated": 1000,
+    "held_right": 765,
+    "held_wrong": 140,
+    "improved": 54,
+    "intervals_overlap": true,
+    "items": 25000,
+    "net_evaluated_change": 13,
+    "paired_p": 0.218054,
+    "paired_significant": false,
+    "regressed": 41,
+    "shippable_on_accuracy_alone": true,
+    "supported_by_the_paired_test": false,
+    "tests_disagree": false,
+    "unevaluated_changed": 2153,
+    "unpaired_p": 0.456417,
+    "unpaired_significant": false
+  }
+}

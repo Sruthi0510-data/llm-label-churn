@@ -1,0 +1,61 @@
+{
+  "first_significant_coverage": 0.1,
+  "items": 25000,
+  "records": [
+    {
+      "changed": 2248,
+      "coverage": 0.002,
+      "discordant": 7,
+      "labelled": 50,
+      "paired_p": 1.0,
+      "paired_significant": false,
+      "unevaluated_changed": 2241
+    },
+    {
+      "changed": 2248,
+      "coverage": 0.01,
+      "discordant": 25,
+      "labelled": 250,
+      "paired_p": 0.69004,
+      "paired_significant": false,
+      "unevaluated_changed": 2223
+    },
+    {
+      "changed": 2248,
+      "coverage": 0.04,
+      "discordant": 95,
+      "labelled": 1000,
+      "paired_p": 0.21805,
+      "paired_significant": false,
+      "unevaluated_changed": 2153
+    },
+    {
+      "changed": 2248,
+      "coverage": 0.1,
+      "discordant": 214,
+      "labelled": 2500,
+      "paired_p": 0.01653,
+      "paired_significant": true,
+      "unevaluated_changed": 2034
+    },
+    {
+      "changed": 2248,
+      "coverage": 0.25,
+      "discordant": 544,
+      "labelled": 6250,
+      "paired_p": 0.00403,
+      "paired_significant": true,
+      "unevaluated_changed": 1704
+    },
+    {
+      "changed": 2248,
+      "coverage": 0.5,
+      "discordant": 1133,
+      "labelled": 12500,
+      "paired_p": 0.0007,
+      "paired_significant": true,
+      "unevaluated_changed": 1115
+    }
+  ],
+  "shipped_coverage": 0.04
+}

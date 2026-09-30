@@ -1,0 +1,16 @@
+{
+  "diagrams": [
+    "flow.svg",
+    "tests.svg"
+  ],
+  "source": "tools/render_diagrams.py",
+  "palette": {
+    "categorical": [
+      "#2a78d6",
+      "#eb6834",
+      "#1baf7a"
+    ],
+    "surface": "#fcfcfb"
+  },
+  "note": "figures are read from the experiment JSON, so a diagram cannot go stale"
+}

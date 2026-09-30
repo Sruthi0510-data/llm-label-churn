@@ -77,8 +77,13 @@ guarantee, so an addition should be argued for rather than made to get a build g
 
 
 def collapse(text: str) -> str:
-    """Collapse whitespace so an anchor never fails because markdown wrapped a line."""
-    return re.sub(r"\s+", " ", text)
+    """Collapse whitespace and case, so neither wrapping nor a capital fails a correct anchor.
+
+    Lowercasing was added after an anchor failed on "The paired test returns 0.2181": the same
+    phrase, at the start of a sentence. An anchor is a wording check, and a sentence-initial
+    capital is not a change of wording.
+    """
+    return re.sub(r"\s+", " ", text).lower()
 
 
 def strip_code(text: str) -> str:
@@ -95,7 +100,11 @@ def format_value(value: Any) -> list[str]:
     design effect of 64236.36 rendered as 64236.4 and the checker reported a correct sentence as
     stale. `str` keeps the value the collector actually wrote, which is what a document quotes.
     """
-    if isinstance(value, float):
+    if isinstance(value, str):
+        # Not every metric is a number. The name of the class that moved most is measured by an
+        # experiment and quoted in prose exactly like a figure, so it is anchored the same way.
+        rendered = [value]
+    elif isinstance(value, float):
         rendered = [str(value), f"{value:g}", f"{value:.1f}", f"{value:,}"]
     else:
         rendered = [f"{value:,}", str(value)]
@@ -147,6 +156,8 @@ def check_stale_per_document(payload: dict[str, Any], documents: dict[str, str])
     for name, value in sorted(payload["metrics"].items()):
         allowed = set(format_value(value))
         for anchor in payload["anchors"].get(name, []):
+            if isinstance(value, str):
+                continue
             pattern = re.escape(collapse(anchor)).replace(r"\{\}", NUMBER_GROUP)
             for document, text in documents.items():
                 for match in re.finditer(pattern, collapse(text)):

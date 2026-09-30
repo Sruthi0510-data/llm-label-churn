@@ -1,0 +1,59 @@
+{
+  "largest_class_shift": {
+    "class": "security",
+    "in": 259,
+    "net": -347,
+    "out": 606
+  },
+  "net_evaluated_change": 13,
+  "records": [
+    {
+      "class": "billing",
+      "in": 348,
+      "net": 162,
+      "out": 186
+    },
+    {
+      "class": "compliance",
+      "in": 491,
+      "net": 317,
+      "out": 174
+    },
+    {
+      "class": "incident",
+      "in": 115,
+      "net": 30,
+      "out": 85
+    },
+    {
+      "class": "onboarding",
+      "in": 223,
+      "net": 150,
+      "out": 73
+    },
+    {
+      "class": "partnership",
+      "in": 211,
+      "net": -131,
+      "out": 342
+    },
+    {
+      "class": "product-feedback",
+      "in": 342,
+      "net": 131,
+      "out": 211
+    },
+    {
+      "class": "security",
+      "in": 259,
+      "net": -347,
+      "out": 606
+    },
+    {
+      "class": "support",
+      "in": 259,
+      "net": -312,
+      "out": 571
+    }
+  ]
+}

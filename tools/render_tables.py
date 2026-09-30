@@ -30,75 +30,78 @@ def _block(name: str, body: str, source: str) -> str:
     )
 
 
-def dialect_table() -> tuple[str, list[Any]]:
-    payload = json.loads((EXPERIMENTS / "exp02_dialect_sweep.json").read_text())
+def changes_table() -> tuple[str, list[Any]]:
+    payload = json.loads((EXPERIMENTS / "exp02_the_wrong_test.json").read_text())
     values: list[Any] = []
     lines = [
-        "| dialect | what it draws | sound | cannot fail | blocking | unknown | to fix |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
-    ]
-    for name in sorted(payload["dialects"]):
-        row = payload["dialects"][name]
-        values.extend(
-            [row["sound"], row["underpowered"], row["underpowered_blocking"],
-             row["indeterminate"], row["scan_multiple"]]
-        )
-        lines.append(
-            f"| `{name}` | {row['sampling_mode']} | {row['sound']} | {row['underpowered']} | "
-            f"{row['underpowered_blocking']} | {row['indeterminate']} | "
-            f"{row['scan_multiple']}x |"
-        )
-    return _block("dialects", "\n".join(lines), "exp02_dialect_sweep.json"), values
-
-
-def validation_table() -> tuple[str, list[Any]]:
-    payload = json.loads((EXPERIMENTS / "exp03_theory_against_measurement.json").read_text())
-    values: list[Any] = []
-    lines = [
-        "| defect correlation | contaminated blocks | measured | naive formula | "
-        "design effect | exact model |",
+        "| change | accuracy delta | discordant pairs | paired p | unpaired p | tests disagree |",
         "| --- | --- | --- | --- | --- | --- |",
     ]
     for record in payload["records"]:
+        # The display strings rather than re-rounded floats. Formatting a value twice, once
+        # for the table and once for the backward check, produced two different renderings of
+        # the same number and reported the table as unguarded against itself.
+        paired = f"{record['paired_p']:.4f}"
+        unpaired = f"{record['unpaired_p']:.4f}"
         values.extend(
-            [record["correlation"], record["contaminated_blocks"], record["blocks"],
-             record["measured"], record["naive"], record["design_effect"], record["exact"]]
+            [record["accuracy_delta_points"], record["discordant"], paired, unpaired]
         )
         lines.append(
-            f"| {record['correlation']} | {record['contaminated_blocks']} of "
-            f"{record['blocks']} | {record['measured']} | {record['naive']} | "
-            f"{record['design_effect']} | {record['exact']} |"
+            f"| `{record['before']}` to `{record['after']}` | "
+            f"{record['accuracy_delta_points']:+} points | {record['discordant']} | "
+            f"{paired} | {unpaired} | "
+            f"{'yes' if record['tests_disagree'] else 'no'} |"
         )
-    block = _block("validation", "\n".join(lines), "exp03_theory_against_measurement.json")
-    return block, values
+    return _block("changes", "\n".join(lines), "exp02_the_wrong_test.json"), values
 
 
-def cost_table() -> tuple[str, list[Any]]:
-    payload = json.loads((EXPERIMENTS / "exp05_cost_of_being_sure.json").read_text())
+def coverage_table() -> tuple[str, list[Any]]:
+    payload = json.loads((EXPERIMENTS / "exp03_the_unevaluable_majority.json").read_text())
     values: list[Any] = []
     lines = [
-        "| defect rate to catch | rows, row sampling | rows, block sampling |",
-        "| --- | --- | --- |",
+        "| coverage | labelled items | discordant pairs | label moves nobody can judge | "
+        "paired p |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for record in payload["records"]:
+        paired = f"{record['paired_p']:.4f}"
+        values.extend(
+            [round(100 * record["coverage"], 1), record["labelled"], record["discordant"],
+             record["unevaluated_changed"], paired]
+        )
+        lines.append(
+            f"| {round(100 * record['coverage'], 1)}% | {record['labelled']:,} | "
+            f"{record['discordant']} | {record['unevaluated_changed']:,} | {paired} |"
+        )
+    return _block("coverage", "\n".join(lines), "exp03_the_unevaluable_majority.json"), values
+
+
+def sizing_table() -> tuple[str, list[Any]]:
+    payload = json.loads((EXPERIMENTS / "exp04_how_big_an_eval_set.json").read_text())
+    values: list[Any] = []
+    lines = [
+        "| improvements among the flips | discordant pairs needed | items to label | "
+        "multiple of the current set |",
+        "| --- | --- | --- | --- |",
     ]
     for record in payload["records"]:
         values.extend(
-            [
-                round(1 / record["rate"]),
-                record["rows_row_sampling"],
-                record["rows_block_sampling"],
-            ]
+            [round(100 * record["improving_share_of_flips"]),
+             record["discordant_pairs_needed"], record["labelled_items_needed"],
+             record["multiple_of_current"]]
         )
         lines.append(
-            f"| 1 in {round(1 / record['rate']):,} | {record['rows_row_sampling']:,} | "
-            f"{record['rows_block_sampling']:,} |"
+            f"| {round(100 * record['improving_share_of_flips'])}% | "
+            f"{record['discordant_pairs_needed']} | "
+            f"{record['labelled_items_needed']:,} | {record['multiple_of_current']}x |"
         )
-    return _block("cost", "\n".join(lines), "exp05_cost_of_being_sure.json"), values
+    return _block("sizing", "\n".join(lines), "exp04_how_big_an_eval_set.json"), values
 
 
 def table_values() -> list[Any]:
     """Every number the generated tables contain, for the backward check to recognise."""
     values: list[Any] = []
-    for builder in (dialect_table, validation_table, cost_table):
+    for builder in (changes_table, coverage_table, sizing_table):
         _, produced = builder()
         values.extend(produced)
     return values
@@ -108,9 +111,9 @@ def main() -> int:
     text = README.read_text(encoding="utf-8")
     replaced = 0
     for name, builder in (
-        ("dialects", dialect_table),
-        ("validation", validation_table),
-        ("cost", cost_table),
+        ("changes", changes_table),
+        ("coverage", coverage_table),
+        ("sizing", sizing_table),
     ):
         block, _ = builder()
         pattern = re.compile(
