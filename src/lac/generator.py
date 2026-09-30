@@ -80,8 +80,16 @@ class GeneratorConfig:
     base_skill: float = 0.86
     improved: tuple[str, ...] = ("billing", "compliance", "onboarding")
     degraded: tuple[str, ...] = ("partnership", "security")
-    improvement: float = 0.07
+    improvement: float = 0.05
     degradation: float = 0.05
+    """Chosen so the shipped fixture contains both failures this repository is about.
+
+    The second version trades three classes against two and lands a small positive marginal that
+    the paired test cannot distinguish from noise: the case where a slide says ship and the
+    evidence does not support it. The third is a uniform improvement the paired test resolves
+    easily and the unpaired test does not: the case where a team throws away a real gain. Tuned
+    by searching the two rates, and the search is in the commit history rather than hidden.
+    """
     third_version_gain: float = 0.022
     third_version_independent_draw_rate: float = 0.03
 
@@ -143,13 +151,18 @@ def generate(config: GeneratorConfig | None = None) -> Generated:
     """Build a corpus, two label sets and the partial ground truth."""
     config = config or GeneratorConfig()
     rng = random.Random(config.seed)
+    # A second stream for the ground truth sample, so changing `labelled` changes which items a
+    # human looked at and nothing else. Drawing it from the same stream would shift every
+    # subsequent label, and a coverage sweep would then be comparing different corpora at every
+    # point while appearing to compare the same one.
+    truth_rng = random.Random(config.seed + 1)
     skill = _skill_table(config)
 
     items: list[Item] = []
     truth: dict[str, str] = {}
     drafts: list[dict[str, str]] = [{}, {}, {}]
 
-    labelled_ids = set(rng.sample(range(config.items), config.labelled))
+    labelled_ids = set(truth_rng.sample(range(config.items), config.labelled))
 
     for index in range(config.items):
         item_id = f"doc-{index:06d}"

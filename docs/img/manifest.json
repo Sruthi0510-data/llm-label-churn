@@ -1,0 +1,32 @@
+{
+  "shots": [
+    {
+      "image": "docs/img/report-summary.png",
+      "source": "docs/report.html",
+      "framed_from": "summary",
+      "framed_to": "transitions",
+      "height_px": 276
+    },
+    {
+      "image": "docs/img/report-transitions.png",
+      "source": "docs/report.html",
+      "framed_from": "transitions",
+      "framed_to": "tests",
+      "height_px": 296
+    },
+    {
+      "image": "docs/img/report-tests.png",
+      "source": "docs/report.html",
+      "framed_from": "tests",
+      "framed_to": null,
+      "height_px": 324
+    }
+  ],
+  "badge": {
+    "colour": "rgb(255, 255, 255)",
+    "background": "rgb(138, 59, 18)",
+    "text": "THE ACCURACY DELTA AND THE PAIRED TEST DISAGREE",
+    "visible": true
+  },
+  "note": "captured from the report the tool generates, framed by heading id, with the verdict badge contrast read back from the rendered page"
+}
