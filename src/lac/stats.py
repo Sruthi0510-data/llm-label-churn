@@ -24,16 +24,27 @@ from dataclasses import dataclass
 from lac.errors import ConfigError
 
 
-def _binomial_tail(successes: int, trials: int, at_least: bool) -> float:
-    """Exact binomial tail at p of one half, summed in a numerically stable order."""
-    if trials == 0:
-        return 1.0
-    indices = range(successes, trials + 1) if at_least else range(0, successes + 1)
+def _lower_binomial_tail(successes: int, trials: int) -> float:
+    """Exact lower binomial tail at p of one half, summed through log gamma for stability.
+
+    Lower tail only, and no guard for zero trials. Both were here and branch coverage showed
+    neither could be reached: the caller takes the smaller of the two counts, so the tail is
+    always the lower one, and it returns before this function when there are no discordant
+    pairs. A branch nothing can reach is not defensive, it is a claim the tests cannot check.
+    """
     log_half = trials * math.log(0.5)
-    return min(1.0, sum(math.exp(math.lgamma(trials + 1)
-                                 - math.lgamma(k + 1)
-                                 - math.lgamma(trials - k + 1)
-                                 + log_half) for k in indices))
+    return min(
+        1.0,
+        sum(
+            math.exp(
+                math.lgamma(trials + 1)
+                - math.lgamma(k + 1)
+                - math.lgamma(trials - k + 1)
+                + log_half
+            )
+            for k in range(successes + 1)
+        ),
+    )
 
 
 def mcnemar_exact(right_to_wrong: int, wrong_to_right: int) -> float:
@@ -48,7 +59,7 @@ def mcnemar_exact(right_to_wrong: int, wrong_to_right: int) -> float:
     discordant = right_to_wrong + wrong_to_right
     if discordant == 0:
         return 1.0
-    lower = _binomial_tail(min(right_to_wrong, wrong_to_right), discordant, at_least=False)
+    lower = _lower_binomial_tail(min(right_to_wrong, wrong_to_right), discordant)
     return min(1.0, 2.0 * lower)
 
 

@@ -117,10 +117,15 @@ def _cmd_compare(args: argparse.Namespace, out) -> int:
 
 def _cmd_regressions(args: argparse.Namespace, out) -> int:
     comparison = _comparison(args)
+    items = load_corpus(args.corpus).by_id()
     regressions = comparison.matrix.regressions()
     print(f"{len(regressions)} item(s) went from right to wrong", file=out)
     for entry in regressions[: args.limit]:
-        print(f"  {entry.item_id}  {entry.truth} -> {entry.after}", file=out)
+        item = items[entry.item_id]
+        print(
+            f"  {entry.item_id}  {entry.truth} -> {entry.after}  ({item.text})",
+            file=out,
+        )
     if len(regressions) > args.limit:
         print(f"  ... {len(regressions) - args.limit} more", file=out)
     return exit_codes.REGRESSION if regressions else exit_codes.OK
