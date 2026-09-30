@@ -29,7 +29,7 @@ The shipped corpus holds 25,000 items, and 1,000 of them have a human label, whi
 
 Then the opposite failure, on the next version. Moving from the second prompt to the third is **worth 2.7 points**, **the paired test says 0.0011** and **the unpaired test says 0.1059**. A real improvement, which the test most teams run would have thrown away.
 
-188 tests, 100.0% line and 100.0% branch coverage, and every figure on this page is re-measured by CI and matched against the wording around it by `tools/check_numbers.py`.
+194 tests, 100.0% line and 100.0% branch coverage, and every figure on this page is re-measured by CI and matched against the wording around it by `tools/check_numbers.py`.
 
 ## Quickstart
 
@@ -165,6 +165,18 @@ make verify     all of the above, offline, from a fresh clone
 
 `tools/check_numbers.py` matches anchor phrases rather than digits, collapses whitespace so a wrapped line cannot fail correct prose, checks each document separately so a stale sentence cannot hide behind a correct one, and checks backwards so a number nothing re-measures cannot appear. The data tables are not typed at all: `tools/render_tables.py` writes them from the experiment JSON and CI fails if the committed README differs from a fresh render.
 
+## Proof of work
+
+The transcript below was produced by running the commands, not by transcribing
+them. `tools/proof_of_work.py` executes each one in a subprocess, records the
+exit code, and fails the build when a command does not exit the way this README
+says it does, so all four documented exit codes are demonstrated rather than asserted. Elapsed times and absolute paths are normalised so the
+committed image does not change on every run; nothing else is touched, and the
+full untruncated output with a SHA-256 of each command's bytes is in
+`docs/proof-of-work.json`.
+
+![Captured terminal transcript of the suite and the command line](docs/img/proof-of-work.svg)
+
 ## Tech stack
 
 | technology | role here | why this one |
@@ -172,7 +184,7 @@ make verify     all of the above, offline, from a fresh clone
 | Python, standard library only | the accounting, both tests, the generator | the core is set membership and two closed forms; a statistics dependency would hide the derivation the README is arguing |
 | an exact binomial, in log space | McNemar's test | the normal approximation to McNemar is unreliable at the discordant counts a real evaluation set produces, which is exactly where the answer matters |
 | a file-backed run log | recording each comparison | a directory of JSON in a tracker's shape, so a reviewer needs no server, and an optional `mlflow` extra mirrors the same fields for a team that has one |
-| pytest with branch coverage | 188 tests, at 100.0% line and 100.0% branch | branch coverage is what matters in a module of classification rules, and it found two unreachable paths |
+| pytest with branch coverage | 194 tests, at 100.0% line and 100.0% branch | branch coverage is what matters in a module of classification rules, and it found two unreachable paths |
 | ruff | lint and import order | one tool over source, tests, tooling and experiments, so the experiments cannot drift into scratch code |
 | Playwright with Chromium | asserting the committed SVGs load, reading badge contrast | only a browser sees a `naturalWidth` of zero or a badge rendered in its own background colour |
 | hand-emitted SVG | both diagrams | avoids four Mermaid failure modes that all land on a README embed. See ADR-005 |

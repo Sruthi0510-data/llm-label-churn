@@ -116,7 +116,7 @@
     "paired_p": 0.2181,
     "pairs_needed_modest": 194,
     "regressed": 41,
-    "tests_total": 188,
+    "tests_total": 194,
     "unevaluated_changed": 2153,
     "unjudgeable_at_half_coverage": 1115,
     "unpaired_p": 0.4564,

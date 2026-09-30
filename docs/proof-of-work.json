@@ -1,0 +1,101 @@
+{
+  "note": "every command below was executed by tools/capture_terminal.py; exit codes are as returned, and elapsed times and absolute paths are normalised so the committed transcript does not change on every run",
+  "captures": [
+    {
+      "label": "the suite, with branch coverage",
+      "command": "python3 -m pytest -q -p no:cacheprovider --cov=lac --cov-branch --cov-report=term-missing --cov-fail-under=100",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output_sha256": "e479338effa194b1adb0fa2bbf6202a68d12082c414b2ff44e835690839b9b49",
+      "output_lines": 22,
+      "output": "............................................................................................ [ 47%]\n............................................................................................ [ 94%]\n..........                                                                                   [100%]\n========================================== tests coverage ==========================================\n_________________________ coverage: platform linux, python 3.11.15-final-0 _________________________\n\nName                     Stmts   Miss Branch BrPart  Cover   Missing\n--------------------------------------------------------------------\nsrc/lac/__init__.py          4      0      0      0   100%\nsrc/lac/cli.py             117      0     24      0   100%\nsrc/lac/compare.py          60      0     10      0   100%\nsrc/lac/errors.py            4      0      0      0   100%\nsrc/lac/exit_codes.py        9      0      0      0   100%\nsrc/lac/generator.py        84      0     30      0   100%\nsrc/lac/labels.py          112      0     36      0   100%\nsrc/lac/report.py           34      0      4      0   100%\nsrc/lac/runs.py             57      0     10      0   100%\nsrc/lac/stats.py            70      0     20      0   100%\nsrc/lac/transitions.py     120      0     16      0   100%\n--------------------------------------------------------------------\nTOTAL                      671      0    150      0   100%\nRequired test coverage of 100% reached. Total coverage: 100.00%",
+      "max_lines": 16,
+      "tail_lines": 4,
+      "seconds": 14.17
+    },
+    {
+      "label": "the comparison the accuracy delta cannot make: a finding",
+      "command": "python3 -m lac.cli compare",
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "output_sha256": "6f8c13ef10a30bb8fbc9bb857ab1fd5873b3ddec8784774ce9ad6a1bc05b58ce",
+      "output_lines": 39,
+      "output": "{\n  \"before\": \"prompt-v1\",\n  \"after\": \"prompt-v2\",\n  \"items\": 25000,\n  \"evaluated\": 1000,\n  \"coverage\": 0.04,\n  \"accuracy_before\": 0.806,\n  \"accuracy_after\": 0.819,\n  \"accuracy_delta_points\": 1.3,\n  \"held_right\": 765,\n  \"held_wrong\": 140,\n  \"regressed\": 41,\n  \"improved\": 54,\n  \"discordant\": 95,\n  \"net_evaluated_change\": 13,\n  \"changed\": 2248,\n  \"churn_rate_pct\": 8.99,\n  \"unevaluated_changed\": 2153,\n  \"churn_per_net_gain\": 172.9,\n  \"paired_p\": 0.218054,\n  \"unpaired_p\": 0.456417,\n  \"alpha\": 0.05,\n  \"paired_significant\": false,\n  \"unpaired_significant\": false,\n  \"tests_disagree\": false,\n  \"accuracy_before_interval\": [\n    0.7803,\n    0.8293\n  ],\n  \"accuracy_after_interval\": [\n    0.7939,\n    0.8416\n  ],\n  \"intervals_overlap\": true,\n  \"shippable_on_accuracy_alone\": true,\n  \"supported_by_the_paired_test\": false,\n  \"decision_would_differ\": true,\n  \"discordant_pairs_needed\": 85\n}",
+      "max_lines": 17,
+      "tail_lines": 4,
+      "seconds": 0.22
+    },
+    {
+      "label": "where the labels moved, by class",
+      "command": "python3 -m lac.cli churn",
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "output_sha256": "77e9ce40b3cdae97c698ac49d345737094dbffc6c2469cfe338daefd9f05dbbd",
+      "output_lines": 12,
+      "output": "class                    out      in     net\n--------------------------------------------\nbilling                  186     348    +162\ncompliance               174     491    +317\nincident                  85     115     +30\nonboarding                73     223    +150\npartnership              342     211    -131\nproduct-feedback         211     342    +131\nsecurity                 606     259    -347\nsupport                  571     259    -312\n\n2248 of 25000 labels moved, 2153 of them with no ground truth to judge by",
+      "max_lines": 13,
+      "tail_lines": 0,
+      "seconds": 0.19
+    },
+    {
+      "label": "the items that went from right to wrong",
+      "command": "python3 -m lac.cli regressions",
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "output_sha256": "9dff46659cd4e0d1a3c44b0bc35dba93390646ba99ccdf67549662ec33e38583",
+      "output_lines": 12,
+      "output": "41 item(s) went from right to wrong\n  doc-000705  partnership -> product-feedback  (feature request (self-serve))\n  doc-001700  security -> compliance  (feature request (self-serve))\n  doc-002500  compliance -> security  (retention request (self-serve))\n  doc-002634  support -> billing  (incident timeline (enterprise))\n  doc-003295  incident -> security  (vendor assessment (enterprise))\n  doc-003462  onboarding -> support  (invoice discrepancy (enterprise))\n  doc-003548  compliance -> security  (credential rotation (enterprise))\n  doc-004478  security -> compliance  (contract renewal (enterprise))\n  doc-004614  onboarding -> support  (invoice discrepancy (self-serve))\n  doc-005073  billing -> support  (incident timeline (mid-market))\n  ... 31 more",
+      "max_lines": 11,
+      "tail_lines": 0,
+      "seconds": 0.24
+    },
+    {
+      "label": "an evaluation set too small for the discordance asked for: a refusal",
+      "command": "python3 -m lac.cli compare --require-discordant 99999",
+      "exit_code": 4,
+      "expected_exit_code": 4,
+      "output_sha256": "2148a446c0d63bf4598a132bdfdf9bd7b598fd55cf8ab8ebd6e8275a2f9251ca",
+      "output_lines": 1,
+      "output": "underpowered: the labelled sample produced 95 discordant pair(s), below the 99999 the caller required; only discordant pairs carry information about the change",
+      "max_lines": 5,
+      "tail_lines": 2,
+      "seconds": 0.2
+    },
+    {
+      "label": "a version file that is not there",
+      "command": "python3 -m lac.cli compare --before does-not-exist.json",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "output_sha256": "db29f29eda9c5d8108ac066f0650d92e4b70fe4b1f6e6df453c9ea50ef1e637c",
+      "output_lines": 1,
+      "output": "error: file not found: does-not-exist.json",
+      "max_lines": 3,
+      "tail_lines": 0,
+      "seconds": 0.11
+    },
+    {
+      "label": "the recorded comparisons, from a run log with no tracker behind it",
+      "command": "python3 -m lac.cli runs",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output_sha256": "9ca306330ce1892edf57b153260b2498090773f3fd02f97bc49d9170d75b9c9f",
+      "output_lines": 1,
+      "output": "no runs recorded in runs",
+      "max_lines": 8,
+      "tail_lines": 0,
+      "seconds": 0.06
+    },
+    {
+      "label": "every published figure re-checked against the prose",
+      "command": "python3 tools/check_numbers.py",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output_sha256": "59426158640d85eeff6ba7dc6d2660594e0f580038c2da288c6d7a2955de4dc4",
+      "output_lines": 1,
+      "output": "number check passed: 28 metrics verified against 7 documents, forwards, per document and backwards",
+      "max_lines": 3,
+      "tail_lines": 0,
+      "seconds": 0.08
+    }
+  ]
+}
