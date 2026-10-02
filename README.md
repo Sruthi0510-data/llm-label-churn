@@ -29,7 +29,7 @@ The shipped corpus holds 25,000 items, and 1,000 of them have a human label, whi
 
 Then the opposite failure, on the next version. Moving from the second prompt to the third is **worth 2.7 points**, **the paired test says 0.0011** and **the unpaired test says 0.1059**. A real improvement, which the test most teams run would have thrown away.
 
-194 tests, 100.0% line and 100.0% branch coverage, and every figure on this page is re-measured by CI and matched against the wording around it by `tools/check_numbers.py`.
+210 tests, 100.0% line and 100.0% branch coverage, and every figure on this page is re-measured by CI and matched against the wording around it by `tools/check_numbers.py`.
 
 ## Quickstart
 
@@ -184,7 +184,7 @@ full untruncated output with a SHA-256 of each command's bytes is in
 | Python, standard library only | the accounting, both tests, the generator | the core is set membership and two closed forms; a statistics dependency would hide the derivation the README is arguing |
 | an exact binomial, in log space | McNemar's test | the normal approximation to McNemar is unreliable at the discordant counts a real evaluation set produces, which is exactly where the answer matters |
 | a file-backed run log | recording each comparison | a directory of JSON in a tracker's shape, so a reviewer needs no server, and an optional `mlflow` extra mirrors the same fields for a team that has one |
-| pytest with branch coverage | 194 tests, at 100.0% line and 100.0% branch | branch coverage is what matters in a module of classification rules, and it found two unreachable paths |
+| pytest with branch coverage | 210 tests, at 100.0% line and 100.0% branch | branch coverage is what matters in a module of classification rules, and it found two unreachable paths |
 | ruff | lint and import order | one tool over source, tests, tooling and experiments, so the experiments cannot drift into scratch code |
 | Playwright with Chromium | asserting the committed SVGs load, reading badge contrast | only a browser sees a `naturalWidth` of zero or a badge rendered in its own background colour |
 | hand-emitted SVG | both diagrams | avoids four Mermaid failure modes that all land on a README embed. See ADR-005 |

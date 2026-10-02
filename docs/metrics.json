@@ -94,6 +94,7 @@
     "docs/adr/ADR-004-exit-codes-separate-a-finding-from-a-failure.md",
     "docs/adr/ADR-005-what-this-repository-cannot-measure.md"
   ],
+  "measured_despite_a_red_suite": false,
   "metrics": {
     "accuracy_delta_points": 1.3,
     "churn_per_net_gain": 172.9,
@@ -116,7 +117,7 @@
     "paired_p": 0.2181,
     "pairs_needed_modest": 194,
     "regressed": 41,
-    "tests_total": 194,
+    "tests_total": 210,
     "unevaluated_changed": 2153,
     "unjudgeable_at_half_coverage": 1115,
     "unpaired_p": 0.4564,
