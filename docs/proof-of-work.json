@@ -83,9 +83,9 @@
       "command": "python3 tools/check_numbers.py",
       "exit_code": 0,
       "expected_exit_code": 0,
-      "output_sha256": "59426158640d85eeff6ba7dc6d2660594e0f580038c2da288c6d7a2955de4dc4",
+      "output_sha256": "8879bf058751f28bf77c1d1fa847e4325eeafb379a2384f7f6fa9d687cc02443",
       "output_lines": 1,
-      "output": "number check passed: 28 metrics verified against 7 documents, forwards, per document and backwards",
+      "output": "number check passed: 28 metrics verified against 6 documents, forwards, per document and backwards",
       "max_lines": 3,
       "tail_lines": 0
     }

@@ -81,4 +81,3 @@ clean:
 
 corpus:
 	$(PY) -m lac.cli generate
-
